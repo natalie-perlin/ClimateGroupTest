@@ -1,0 +1,220 @@
+# Youtube  https://www.youtube.com/watch?v=RGOj5yH7evk
+#
+pip 
+homebrew
+# git install
+# 
+git clone http://github.com/myusername/mycode.git
+ OR (after setting the SSH keys):
+git clone git@github.com:myusername/mycode.git
+git status 
+git add 
+git add . [to add all files in the current directory]
+git commit -m "My commint message here" -m "My description here"
+
+## generate SSH keys on a local machine
+ssh-keygen -t rsa -b [2048|4096]
+eval "$(ssh-agent -s)"
+Modify ~/.ssh/config
+       Host *
+       AddKeysToAgent yes
+       UseKeychain yes
+       IdentityFile ~/.ssh/id_rsa
+ssh-add -K ~/.ssh/id_rsa   [for Apple]
+ssh-add  ~/.ssh/id_rsa   
+##
+##
+git push origin master  [origin is set as location, master is the branch name]
+## 
+## create new repository locally, e.g., new directory
+mkdir demo-repo2
+cd demo-repo2
+git init
+## add a new file, e.g. README.md
+git status
+git add README.md  [or: git add . ]
+git commit -m "Created README" -m "Descrption"
+# Create empty repository on github "demo-repo2"
+## Obtain the git repostory address SSH
+git remote  add origin git@github.com:myusername/demo-repo2.git
+# show any remote repositories that are connected to the current repo
+git remote -v 
+# show remote repositories that are connected to the current repository
+git remote -v  show <thisrepo>
+
+git push origin master
+# set upstream:  
+git push -u origin master [later could use simply `git push`]
+##
+## Git branching
+git branch  [ will show `master` branch by default]
+git checkout -b feature-readme-instructions  [create new branch]
+git branch
+git checkout master  [`checkout` command switches between the branches]hpc-stack.2022.0
+git branch
+git checkout feature-readme-instructions 
+##
+git status
+## modify README.md
+git add README.md
+git commit -m "updated README"
+git checkout master
+git diff feature-readme-instructions [check the codes you plan to merge, between the master and the branch repo; exit with `q`] 
+[you could do next: `git merge feature-readme-instructions` - would merge with the master branch]
+git checkout feature-readme-instructions
+git status
+git push  [won't work, as it does not know about which branch to push it to in the upstream]
+[Most often, the branch will be named in remote repo in the same way as on the local machine]
+git push --set-upstream origin feature-readme-instructions  [`-u` is the shortcut for `--set-upstream`]
+## Go to github, create a pull request, make or get comments, resolve comments, merge the branch
+## when all comments are resolved. After `merge` between the feature branch and the master branch is 
+## completed, the feature branch is removed (on the remote repository)
+## Still need to update the master branch in the local repository:
+git checkout master
+git pull origin master [if origin and master not set]
+git pull  [if origin and master are set]
+## delete the feature branch `feature-readme-instructions`
+git branch -d feature-readme-instructions
+git branch [ only have master again ]
+## The above works well if there are no merge conflicts (with branches from other people
+## changing the same file in the main branch)
+## could be done manually, for example 
+git branch
+git checkout -b quick-test
+[modify index.html while in this new branch]
+# on a branch quick-test:
+git status  [shows `modified: index.html`]
+git diff  [ shows all the changes done since the last commit; exit with `q`]
+git commit -am "commit message"  [option `-am` only works for modified files]
+## if it is newly created, need to let git know about this file with `git add`
+[go to the master branch]
+git checkout master
+[ update the same line in index.html as has been done in the quick-test branch ]
+git branch [test which branch you are in ]
+git checkout quick-test [attempt to switch to a different branch before committing[
+[- it will give an error, and will not let changing branches - because otherwise the 
+[ file index.html would be changed, if not committed before changing branches]
+git status
+git commit -am "added something"
+git checkout quick-test
+git diff master  [shows changes; exit with `q`]
+git merge master [both `master` and `quick-test` are updated at this point]
+[You will get merge conflict in index.html -]
+[automatic merge will fail; need to fix conflicts and then commit the result]
+[add or resolve the changes in quick-test branch]
+git status [verify that you are in quick-test branch
+[modify the file in an editor of your choice, delete conflict markers]
+git diff  
+git commit -am "updated with master branch"
+##
+## undoing in git
+git status [ verify the branch]
+git add README.md
+git status
+
+# Checkout or clone a single branch from the repository:
+
+# clones all the branches, but no need to switch to <branch> from <main>/<master>
+# or another way to say: fetching _all_ the branches and checking out one
+git clone -b <branch> <remote_repo>     
+# another example:
+git clone -b my-branch git@github.com:user/myproject.git
+# fetch and download a single branch example:
+git clone -b opencv-2.4 --single-branch https://github.com/Itseez/opencv.git
+
+
+## merging local and remote branches (force use local version of all files in case of conflicts)
+git remote -v
+git fetch origin <branch_name>
+git merge <branch_name>
+git status
+# force use local versions of all files, as opposed to --theirs , which is the version you pulled in
+git checkout --ours .    # note the "." in the end!!!       
+git add -u
+git commit
+git push origin <branch_name>
+
+# https://stackoverflow.com/questions/21101572/difference-between-file-in-local-repository-and-origin
+#  Difference between file in local repository and origin
+# If [remote-path] and [local-path] are the same, you can do
+ git fetch origin master
+ git diff origin/master -- [local-path]
+
+# Note 1: The second command above will compare against the locally stored 
+# remote tracking branch. The fetch command is required to update the remote 
+# tracking branch to be in sync with the contents of the remote server. 
+# Alternatively, you can just do
+
+ git diff master:<path-or-file-name>
+
+# Note 2: master can be replaced in the above examples with any branch name
+#
+git diff master:README.md -- README.md
+git diff origin/master -- README.md
+
+#
+To view the differences going from the remote file to the local file:
+git diff remotename/branchname:remote/path/file1.txt local/path/file1.txt
+
+To view the differences in the other direction:
+git diff HEAD:local/path/file1.txt remotename/branchname:remote/path/file1.txt
+Basically you can diff any two files anywhere using this notation:
+git diff ref1:path/to/file1 ref2:path/to/file2
+##
+# Compare two branches using git diff
+# In order to compare two branches easily, you have to use the “git diff” command and provide the branch names separated by dots.
+
+git diff branch1..branch2
+
+#As usual, ref1 and ref2 could be branch names, remotename/branchname, commit SHAs, etc.
+#
+Deleting a branch LOCALLY
+Delete a branch with git branch -d <branch> . The -d option will delete the branch only if it has already been pushed and merged with the remote branch. Use -D instead if you want to force the branch to be deleted, even if it hasn't been pushed or merged yet. The branch is now deleted locally.
+
+# If you want to rename a branch while pointed to any branch, do:
+git branch -m <oldname> <newname>
+# If you want to rename the current branch, you can do:
+git branch -m <newname>
+# If you want to push the local branch and reset the upstream branch:
+git push origin -u <newname>
+#And finally if you want to Delete the remote branch:
+git push origin --delete <oldname>
+
+# Change remote name from 'origin' to 'destination'
+git remote rename <origin> <destination>
+
+
+#A way to remember this is -m is for "move" (or mv), which is how you rename files. 
+# Adding an alias could also help. To do so, run the following:
+git config --global alias.rename 'branch -m'
+# If you are on Windows or another case-insensitive filesystem, and there are only 
+# capitalization changes in the name, you need to use -M, otherwise, git will throw branch already exists error:
+git branch -M <newname>
+
+# Stop tracking a remote branch - e.g., when need to delete 
+# a local branch but not remote one (Note: Deleting the local one 
+# and pushing the deletion to remote will delete the remote branch 
+# as well!
+git branch --unset-upstream
+#  or delete the local branch that is tracking the remote branch:
+git branch -d -r origin/<remote branch name>
+# -r, --remotes tells git to delete the remote-tracking branch 
+# (i.e., delete the branch set to track the remote branch). 
+# This will _not_ delete the branch on the remote repo!
+
+# Start tracking a remote repository:
+git remote add <new-origin> git@github.com:<USER/PROJECT.git>
+#
+# switch remote repository to follow a local branch:
+git branch <branch_name> -u <your_new_remote>/<branch_name>
+#
+# set new url for the remote tracking of origin repo
+git remote set-url <origin> <https://some_url/some_repo>
+#
+# Show which branches are being tracked by a given repo <origin>
+git remote show <origin>
+##
+git push <remote-name> <local-branch-name>:<remote-branch-name>
+##
+# remove the connection from the local repo to the remote origin
+git remote rm <origin>
