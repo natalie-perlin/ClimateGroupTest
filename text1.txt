@@ -1,3 +1,0 @@
-#
-# This is a new project file for ClimateGroupTest, file text1.txt
-# 
