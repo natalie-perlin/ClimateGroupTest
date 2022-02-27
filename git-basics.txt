@@ -1,3 +1,6 @@
+## This is my own collection of various git tools
+## and notes on their use 
+## (mostly for documenting the options) 
 # Youtube  https://www.youtube.com/watch?v=RGOj5yH7evk
 #
 pip 

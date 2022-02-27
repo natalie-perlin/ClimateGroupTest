@@ -1,3 +1,8 @@
-# This is a README.md file for the project ClimateGroupTest
+# This is a README.md file for the git project "ClimateGroupTest"
 
-put some comments here :)
+Files in this repository:
+README.md
+GIT_QUICK_INTRO.pdf
+Git_CheatSheet.pdf
+Pro_Git_Book.pdf
+git-basics.txt
