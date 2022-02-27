@@ -1,7 +1,7 @@
-## This is my own collection of various git tools
-## and notes on their use 
+## This is my own working collection of various git tools
+## and notes on their use
 ## (mostly for documenting the options) 
-# Youtube  https://www.youtube.com/watch?v=RGOj5yH7evk
+# Useful video: Youtube  https://www.youtube.com/watch?v=RGOj5yH7evk
 #
 pip 
 homebrew
